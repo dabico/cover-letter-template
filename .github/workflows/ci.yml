@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@v4
+      - name: Generate PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+      - name: Rename PDF
+        run: mv main.pdf ozren_dabic_cover_letter.pdf
+      - id: artifact-upload-step
+        name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ozren-dabic-cover-letter
+          path: ozren_dabic_cover_letter.pdf
+      - name: Output Artifact URL
+        run:  echo '${{ steps.artifact-upload-step.outputs.artifact-url }}'
